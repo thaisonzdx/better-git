@@ -11,6 +11,7 @@ vet:
 
 # Smoke test: the wrapper should hand off to the original git.
 check: vet build
+	go test ./...
 	$(BIN) --version
 
 # Tag HEAD with the next YY.MM.x version; push the tag to publish.

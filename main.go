@@ -12,18 +12,24 @@ import (
 var version = "dev"
 
 func main() {
-	git, err := originalGit()
+	git, err := git()
 	if err == nil {
 		if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v") {
 			fmt.Println("bettergit version", version)
 		}
-		err = syscall.Exec(git, append([]string{"git"}, os.Args[1:]...), os.Environ())
+		if len(os.Args) == 2 && os.Args[1] == "config" && isTerminal(os.Stdin) && isTerminal(os.Stderr) {
+			if err = configureProfile(git); err == nil {
+				return
+			}
+		} else {
+			err = syscall.Exec(git, append([]string{"git"}, os.Args[1:]...), os.Environ())
+		}
 	}
 	fmt.Fprintln(os.Stderr, "better-git:", err)
 	os.Exit(1)
 }
 
-func originalGit() (string, error) {
+func git() (string, error) {
 	exe, err := os.Executable()
 	if err != nil {
 		return "", err
