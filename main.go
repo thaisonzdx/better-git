@@ -8,9 +8,15 @@ import (
 	"syscall"
 )
 
+// Set at build time via -ldflags "-X main.version=..." from the git tag.
+var version = "dev"
+
 func main() {
 	git, err := originalGit()
 	if err == nil {
+		if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v") {
+			fmt.Println("bettergit version", version)
+		}
 		err = syscall.Exec(git, append([]string{"git"}, os.Args[1:]...), os.Environ())
 	}
 	fmt.Fprintln(os.Stderr, "better-git:", err)

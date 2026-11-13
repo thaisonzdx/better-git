@@ -25,6 +25,9 @@ jobs:
         goarch: [amd64, arm64]
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Full history so git describe can see the tags.
+          fetch-depth: 0
 
       - uses: actions/setup-go@v6
         with:
@@ -37,7 +40,7 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: '0'
-        run: go build -trimpath -ldflags='-s -w' -o "better-git-$GOOS-$GOARCH" .
+        run: go build -trimpath -ldflags="-s -w -X main.version=$(git describe --tags --always --dirty)" -o "better-git-$GOOS-$GOARCH" .
 
       - uses: actions/upload-artifact@v6
         with:
