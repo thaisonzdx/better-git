@@ -4,9 +4,8 @@
 
 set -eu
 
-BETTERGIT_DIR="$HOME/.bettergit"
-BETTERGIT_BIN_DIR="$BETTERGIT_DIR/bin"
-BETTERGIT_CONFIG="$BETTERGIT_DIR/config.json"
+BETTERGIT_BIN_DIR="$HOME/.local/bin"
+BETTERGIT_CONFIG="$HOME/.bettergit"
 
 # GitHub "owner/repo" whose latest release hosts the binaries; fill in the default before publishing.
 BETTERGIT_REPO="${BETTERGIT_REPO-}"
@@ -167,7 +166,7 @@ bettergit_do_install() {
 
   # Literal $HOME and $PATH: they are expanded when the profile is sourced.
   # shellcheck disable=SC2016
-  local source_str='export PATH="$HOME/.bettergit/bin:$PATH"'
+  local source_str='export PATH="$HOME/.local/bin:$PATH"'
   local profile
   profile="$(bettergit_detect_profile)"
 
@@ -182,7 +181,7 @@ bettergit_do_install() {
     return
   fi
 
-  if grep -qs '\.bettergit/bin' "$profile"; then
+  if grep -qs '# better-git:' "$profile"; then
     bettergit_echo "=> better-git PATH entry already in $profile"
   else
     bettergit_echo "=> Appending better-git PATH entry to $profile"

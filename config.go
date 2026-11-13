@@ -17,7 +17,7 @@ func loadConfig() (config, error) {
 	if err != nil {
 		return cfg, err
 	}
-	data, err := os.ReadFile(filepath.Join(home, ".bettergit", "config.json"))
+	data, err := os.ReadFile(filepath.Join(home, ".bettergit"))
 	if errors.Is(err, os.ErrNotExist) {
 		return cfg, nil
 	}

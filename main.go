@@ -48,5 +48,5 @@ func originalGit() (string, error) {
 			return path, nil
 		}
 	}
-	return "", errors.New("original git not found; set gitPath in ~/.bettergit/config.json")
+	return "", errors.New("original git not found; set gitPath in ~/.bettergit")
 }
